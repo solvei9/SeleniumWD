@@ -23,10 +23,10 @@ public class SimpleTest {
         //System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         //driver = new ChromeDriver();
         //driver = new InternetExplorerDriver();
-        //DesiredCapabilities caps = new DesiredCapabilities();
-        //caps.setCapability(FirefoxDriver.MARIONETTE, true);
-        //driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")), new FirefoxProfile(), caps);
-        driver = new FirefoxDriver();
+        //driver = new FirefoxDriver();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")));
+        driver = new FirefoxDriver(options);
     }
 
     @Test
