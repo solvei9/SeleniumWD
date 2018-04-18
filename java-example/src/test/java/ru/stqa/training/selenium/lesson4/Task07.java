@@ -8,8 +8,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.stqa.training.selenium.lesson4.TestConsts;
 
 import java.io.File;
+import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
@@ -34,12 +36,24 @@ public class Task07 {
 
     @Test
     public void appearenceTest() {
+        // Проверяем элемент верхнего уровня
         WebElement menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
         menu.click();
         wait.until(titleIs("Catalog | My Store"));
+
+        // Проверяем элементы второго уровня
         menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
-        menu.findElement(By.id("doc-product_groups")).click();
-        wait.until(titleIs("Product Groups | My Store"));
+        List<WebElement> menuItems = menu.findElements(By.cssSelector("ul.docs li"));
+        for (int i=1; i<menuItems.size(); i++) {
+            String id = menuItems.get(i).getAttribute("id");
+            menuItems.get(i).click();
+            switch (id) {
+                case "doc-catalog": wait.until(titleIs(TestConsts.doc_catalog + " | My Store"));
+                default: break;
+            }
+            menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
+            menuItems = menu.findElements(By.cssSelector("ul.docs li"));
+        }
     }
 
     @After
