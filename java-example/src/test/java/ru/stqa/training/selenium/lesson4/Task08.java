@@ -10,10 +10,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class Task08 {
@@ -31,31 +30,28 @@ public class Task08 {
         wait.until(titleIs("Online Store | My Store"));
     }
 
-    // Определение существования элемента
-    private boolean isElementPresent(By locator) {
-        try {
-            driver.findElement(locator);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
+    private void boxTest(By boxLocator) {
+        WebElement box = driver.findElement(boxLocator);
+        List<WebElement> boxItems = box.findElements(By.cssSelector("ul.listing-wrapper li"));
+        for (WebElement item : boxItems) {
+            List<WebElement> itemSticks = item.findElements(By.cssSelector("div.sticker"));
+            assertEquals(1, itemSticks.size());
         }
     }
 
     @Test
     public void mostPopularTest() {
-        /*WebElement menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
-        menu.click();
-        assertTrue(isElementPresent(By.cssSelector("h1")));
+        boxTest(By.cssSelector("div#box-most-popular"));
+    }
 
-        // Проверяем элементы второго уровня
-        menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
-        List<WebElement> menuItems = menu.findElements(By.cssSelector("ul.docs li"));
-        for (int j = 0; j < menuItems.size(); j++) {
-            menuItems.get(j).click();
-            assertTrue(isElementPresent(By.cssSelector("h1")));
-            menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
-            menuItems = menu.findElements(By.cssSelector("ul.docs li"));
-        }*/
+    @Test
+    public void campaignsTest() {
+        boxTest(By.cssSelector("div#box-campaigns"));
+    }
+
+    @Test
+    public void latestProductsTest() {
+        boxTest(By.cssSelector("div#box-latest-products"));
     }
 
     @After
