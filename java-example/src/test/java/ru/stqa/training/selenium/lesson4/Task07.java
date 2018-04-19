@@ -8,23 +8,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import ru.stqa.training.selenium.lesson4.TestConsts;
 
-import java.io.File;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class Task07 {
     private WebDriver driver;
-    private WebDriverWait wait;
 
     @Before
     public void start() {
         // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
         System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver,2);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 2);
         // Открытие страницы
         driver.get("http://localhost/litecart/admin");
         // Вход под пользователем admin
@@ -34,25 +35,33 @@ public class Task07 {
         wait.until(titleIs("My Store"));
     }
 
-    @Test
-    public void appearenceTest() {
-        // Проверяем элемент верхнего уровня
-        WebElement menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
-        menu.click();
-        wait.until(titleIs("Catalog | My Store"));
+    // Определение существования элемента
+    private boolean isElementPresent(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
 
-        // Проверяем элементы второго уровня
-        menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
-        List<WebElement> menuItems = menu.findElements(By.cssSelector("ul.docs li"));
-        for (int i=1; i<menuItems.size(); i++) {
-            String id = menuItems.get(i).getAttribute("id");
-            menuItems.get(i).click();
-            switch (id) {
-                case "doc-catalog": wait.until(titleIs(TestConsts.doc_catalog + " | My Store"));
-                default: break;
+    @Test
+    public void menuTest() {
+        for (int i = 1; i<=17; i++) {
+            // Проверяем элемент верхнего уровня
+            WebElement menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
+            menu.click();
+            assertTrue(isElementPresent(By.cssSelector("h1")));
+
+            // Проверяем элементы второго уровня
+            menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
+            List<WebElement> menuItems = menu.findElements(By.cssSelector("ul.docs li"));
+            for (int j = 0; j < menuItems.size(); j++) {
+                menuItems.get(j).click();
+                assertTrue(isElementPresent(By.cssSelector("h1")));
+                menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
+                menuItems = menu.findElements(By.cssSelector("ul.docs li"));
             }
-            menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(2)"));
-            menuItems = menu.findElements(By.cssSelector("ul.docs li"));
         }
     }
 
