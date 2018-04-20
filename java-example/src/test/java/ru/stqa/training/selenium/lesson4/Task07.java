@@ -47,7 +47,8 @@ public class Task07 {
 
     @Test
     public void menuTest() {
-        for (int i = 1; i<=17; i++) {
+        int count = driver.findElements(By.cssSelector("ul#box-apps-menu li")).size();
+        for (int i = 1; i<=count; i++) {
             // Проверяем элемент верхнего уровня
             WebElement menu = driver.findElement(By.cssSelector("ul#box-apps-menu li:nth-child(" + i + ")"));
             menu.click();
