@@ -32,7 +32,7 @@ public class Task08 {
 
     private void boxTest(By boxLocator) {
         WebElement box = driver.findElement(boxLocator);
-        List<WebElement> boxItems = box.findElements(By.cssSelector("ul.listing-wrapper li"));
+        List<WebElement> boxItems = box.findElements(By.cssSelector("li.product"));
         for (WebElement item : boxItems) {
             List<WebElement> itemSticks = item.findElements(By.cssSelector("div.sticker"));
             assertEquals(1, itemSticks.size());
