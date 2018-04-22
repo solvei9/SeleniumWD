@@ -30,28 +30,13 @@ public class Task08 {
         wait.until(titleIs("Online Store | My Store"));
     }
 
-    private void boxTest(By boxLocator) {
-        WebElement box = driver.findElement(boxLocator);
-        List<WebElement> boxItems = box.findElements(By.cssSelector("li.product"));
+    @Test
+    public void boxTest() {
+        List<WebElement> boxItems = driver.findElements(By.cssSelector("li.product"));
         for (WebElement item : boxItems) {
             List<WebElement> itemSticks = item.findElements(By.cssSelector("div.sticker"));
             assertEquals(1, itemSticks.size());
         }
-    }
-
-    @Test
-    public void mostPopularTest() {
-        boxTest(By.cssSelector("div#box-most-popular"));
-    }
-
-    @Test
-    public void campaignsTest() {
-        boxTest(By.cssSelector("div#box-campaigns"));
-    }
-
-    @Test
-    public void latestProductsTest() {
-        boxTest(By.cssSelector("div#box-latest-products"));
     }
 
     @After
