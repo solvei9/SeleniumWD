@@ -19,14 +19,14 @@ public class SimpleTest {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
+        //System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
         //System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
-        driver = new ChromeDriver();
+        //driver = new ChromeDriver();
         //driver = new InternetExplorerDriver();
         //driver = new FirefoxDriver();
-        //FirefoxOptions options = new FirefoxOptions();
-        //options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")));
-        //driver = new FirefoxDriver(options);
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")));
+        driver = new FirefoxDriver(options);
     }
 
     @Test
