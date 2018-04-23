@@ -17,6 +17,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class Task09 {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @Before
     public void start() {
@@ -24,7 +25,7 @@ public class Task09 {
         System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        wait = new WebDriverWait(driver, 2);
         // Открытие страницы
         driver.get("http://localhost/litecart/admin");
         // Вход под пользователем admin
@@ -37,19 +38,60 @@ public class Task09 {
         wait.until(titleIs("Countries | My Store"));
     }
 
-    @Test
-    public void boxTest() {
+    private boolean isSortedAlphabetical(List<WebElement> list, By locator, String attr) {
         boolean sort = true;
-        List<WebElement> countries = driver.findElements(By.cssSelector("tr.row"));
-        int count = countries.size();
-        for (int i=0; i<count-1; i++){
-            String name1 = countries.get(i).findElement(By.cssSelector("a")).getAttribute("textContent");
-            String name2 = countries.get(i+1).findElement(By.cssSelector("a")).getAttribute("textContent");
-            if ((name1.compareTo(name2))>0) {
+        int count = list.size();
+        for (int i = 0; i < count - 1; i++) {
+            String name1 = list.get(i).findElement(locator).getAttribute(attr);
+            String name2 = list.get(i + 1).findElement(locator).getAttribute(attr);
+            if ((name1.compareTo(name2)) > 0) {
                 sort = false;
             }
         }
-        assertTrue(sort);
+        return sort;
+    }
+
+    @Test
+    public void countryTest() {
+        // Сортировка стран
+        List<WebElement> countries = driver.findElements(By.cssSelector("tr.row"));
+        assertTrue(isSortedAlphabetical(countries, By.cssSelector("a"), "textContent"));
+
+        // Сортировка географических зон
+        countries = driver.findElements(By.cssSelector("tr.row"));
+        for (int i = 0; i < countries.size()-1; i++){
+            List<WebElement> list = countries.get(i).findElements(By.cssSelector("td"));
+            int geozoneCount = Integer.parseInt(list.get(5).getAttribute("textContent"));
+            String country = list.get(4).getAttribute("textContent");
+            if (geozoneCount>0) {
+                countries.get(i).findElement(By.cssSelector("a")).click();
+                wait.until(titleIs("Edit Country | My Store"));
+                List<WebElement> geozoneList = driver.findElements(By.cssSelector("table#table-zones tr"));
+                geozoneList.remove(0);
+                geozoneList.remove(geozoneList.size()-1);
+                assertTrue("Страна: " + country, isSortedAlphabetical(geozoneList, By.cssSelector("input[name*='name']"), "value"));
+            }
+            driver.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+            wait.until(titleIs("Countries | My Store"));
+            countries = driver.findElements(By.cssSelector("tr.row"));
+        }
+
+        // Сортировка на странице редактирования географических зон
+        driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        countries = driver.findElements(By.cssSelector("tr.row"));
+        for (int i = 0; i < countries.size(); i++){
+            List<WebElement> list = countries.get(i).findElements(By.cssSelector("td"));
+            String country = list.get(2).getAttribute("textContent");
+            countries.get(i).findElement(By.cssSelector("a")).click();
+            wait.until(titleIs("Edit Geo Zone | My Store"));
+            List<WebElement> geozoneList = driver.findElements(By.cssSelector("table#table-zones tr"));
+            geozoneList.remove(0);
+            geozoneList.remove(geozoneList.size()-1);
+            System.out.println(country + " " + geozoneList.size());
+            assertTrue("Страна: " + country, isSortedAlphabetical(geozoneList, By.cssSelector("select[name*='zone_code'] option[selected='selected']"), "textContent"));
+            driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+            countries = driver.findElements(By.cssSelector("tr.row"));
+        }
     }
 
     @After
