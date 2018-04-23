@@ -38,7 +38,7 @@ public class Task09 {
         wait.until(titleIs("Countries | My Store"));
     }
 
-    private boolean isSortedAlphabetical(List<WebElement> list, By locator, String attr) {
+    private boolean isSortedAlphabetically(List<WebElement> list, By locator, String attr) {
         boolean sort = true;
         int count = list.size();
         for (int i = 0; i < count - 1; i++) {
@@ -55,7 +55,7 @@ public class Task09 {
     public void countryTest() {
         // Сортировка стран
         List<WebElement> countries = driver.findElements(By.cssSelector("tr.row"));
-        assertTrue(isSortedAlphabetical(countries, By.cssSelector("a"), "textContent"));
+        assertTrue(isSortedAlphabetically(countries, By.cssSelector("a"), "textContent"));
 
         // Сортировка географических зон
         countries = driver.findElements(By.cssSelector("tr.row"));
@@ -69,7 +69,7 @@ public class Task09 {
                 List<WebElement> geozoneList = driver.findElements(By.cssSelector("table#table-zones tr"));
                 geozoneList.remove(0);
                 geozoneList.remove(geozoneList.size()-1);
-                assertTrue("Страна: " + country, isSortedAlphabetical(geozoneList, By.cssSelector("input[name*='name']"), "value"));
+                assertTrue("Страна: " + country, isSortedAlphabetically(geozoneList, By.cssSelector("input[name*='name']"), "value"));
             }
             driver.get("http://localhost/litecart/admin/?app=countries&doc=countries");
             wait.until(titleIs("Countries | My Store"));
@@ -88,7 +88,7 @@ public class Task09 {
             geozoneList.remove(0);
             geozoneList.remove(geozoneList.size()-1);
             System.out.println(country + " " + geozoneList.size());
-            assertTrue("Страна: " + country, isSortedAlphabetical(geozoneList, By.cssSelector("select[name*='zone_code'] option[selected='selected']"), "textContent"));
+            assertTrue("Страна: " + country, isSortedAlphabetically(geozoneList, By.cssSelector("select[name*='zone_code'] option[selected='selected']"), "textContent"));
             driver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
             countries = driver.findElements(By.cssSelector("tr.row"));
         }
