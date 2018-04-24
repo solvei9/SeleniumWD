@@ -22,8 +22,8 @@ public class Task10 {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
-        // System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
+        // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
+        System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 2);
@@ -63,17 +63,18 @@ public class Task10 {
 
     private void checkPrices(WebElement product) {
         WebElement prices = product.findElement(By.cssSelector("div.price-wrapper"));
+        WebElement regularPrice = prices.findElement(By.className("regular-price"));
+        WebElement campaignPrice = prices.findElement(By.className("campaign-price"));
         // Обычная цена перечеркнута
-        assertEquals("regular-price", prices.findElement(By.tagName("s")).getAttribute("class"));
+        assertEquals("s", regularPrice.getTagName());
         // Обычная цена серая
-        assertTrue(isGrey(prices.findElement(By.cssSelector("s.regular-price")).getCssValue("color")));
+        assertTrue(isGrey(regularPrice.getCssValue("color")));
         // Акционная цена жирная
-        assertEquals("campaign-price", prices.findElement(By.tagName("strong")).getAttribute("class"));
+        assertEquals("strong", campaignPrice.getTagName());
         // Акционная цена красная
-        assertTrue(isRed(prices.findElement(By.cssSelector("strong.campaign-price")).getCssValue("color")));
+        assertTrue(isRed(campaignPrice.getCssValue("color")));
         // Акционная цена крупнее, чем обычная
-        assertTrue(isGreater(product.findElement(By.cssSelector("div.price-wrapper strong.campaign-price")).getSize(),
-                product.findElement(By.cssSelector("div.price-wrapper s.regular-price")).getSize()));
+        assertTrue(isGreater(campaignPrice.getSize(), regularPrice.getSize()));
     }
 
     private boolean isRed (String color) {
