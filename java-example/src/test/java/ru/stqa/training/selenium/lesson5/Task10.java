@@ -3,17 +3,16 @@ package ru.stqa.training.selenium.lesson5;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
+import org.junit.Rule;
+import static org.hamcrest.core.Is.is;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 public class Task10 {
@@ -31,6 +30,9 @@ public class Task10 {
         driver.get("http://localhost/litecart");
         wait.until(titleIs("Online Store | My Store"));
     }
+
+    @Rule
+    public ErrorCollector collector = new ErrorCollector();
 
     @Test
     public void productTest() {
@@ -66,15 +68,15 @@ public class Task10 {
         WebElement regularPrice = prices.findElement(By.className("regular-price"));
         WebElement campaignPrice = prices.findElement(By.className("campaign-price"));
         // Обычная цена перечеркнута
-        assertEquals("s", regularPrice.getTagName());
+        collector.checkThat(regularPrice.getTagName(), is("s"));
         // Обычная цена серая
-        assertTrue(isGrey(regularPrice.getCssValue("color")));
+        collector.checkThat(isGrey(regularPrice.getCssValue("color")), is(true));
         // Акционная цена жирная
-        assertEquals("strong", campaignPrice.getTagName());
+        collector.checkThat(campaignPrice.getTagName(), is("strong"));
         // Акционная цена красная
-        assertTrue(isRed(campaignPrice.getCssValue("color")));
+        collector.checkThat(isRed(campaignPrice.getCssValue("color")), is(true));
         // Акционная цена крупнее, чем обычная
-        assertTrue(isGreater(campaignPrice.getSize(), regularPrice.getSize()));
+        collector.checkThat(isGreater(campaignPrice.getSize(), regularPrice.getSize()), is(true));
     }
 
     private boolean isRed (String color) {
@@ -122,10 +124,10 @@ public class Task10 {
 
     private void checkEquals(WebElement product, String productName, String regularPrice, String campaignPrice) {
         // Название товара совпадает
-        assertEquals(productName, product.findElement(By.cssSelector("h1.title")).getAttribute("textContent"));
+        collector.checkThat(product.findElement(By.cssSelector("h1.title")).getAttribute("textContent"), is(productName));
         // Обычная цена товара совпадает
-        assertEquals(regularPrice, product.findElement(By.cssSelector("div.price-wrapper s.regular-price")).getAttribute("textContent"));
+        collector.checkThat(product.findElement(By.cssSelector("div.price-wrapper s.regular-price")).getAttribute("textContent"), is(regularPrice));
         // Акционная цена товара совпадает
-        assertEquals(campaignPrice, product.findElement(By.cssSelector("div.price-wrapper strong.campaign-price")).getAttribute("textContent"));
+        collector.checkThat(product.findElement(By.cssSelector("div.price-wrapper strong.campaign-price")).getAttribute("textContent"), is(campaignPrice));
     }
 }
