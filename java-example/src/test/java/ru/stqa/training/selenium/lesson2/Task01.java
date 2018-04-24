@@ -1,32 +1,26 @@
-package ru.stqa.training.selenium.lesson1;
+package ru.stqa.training.selenium.lesson2;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.*;
 
 import java.io.File;
 
-public class SimpleTest {
+public class Task01 {
     private WebDriver driver;
 
     @Before
     public void start() {
         //System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
         //System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
-        //driver = new ChromeDriver();
+        driver = new ChromeDriver();
         //driver = new InternetExplorerDriver();
         //driver = new FirefoxDriver();
-        FirefoxOptions options = new FirefoxOptions();
-        options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")));
-        driver = new FirefoxDriver(options);
+        //FirefoxOptions options = new FirefoxOptions();
+        //options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Firefox Nightly\\firefox.exe")));
+        //driver = new FirefoxDriver(options);
     }
 
     @Test

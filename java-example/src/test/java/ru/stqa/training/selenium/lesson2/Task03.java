@@ -1,4 +1,4 @@
-package ru.stqa.training.selenium.lesson1;
+package ru.stqa.training.selenium.lesson2;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
-public class LoginTest {
+public class Task03 {
     private WebDriver driver;
     private WebDriverWait wait;
 
