@@ -3,11 +3,11 @@ package ru.stqa.training.selenium.lesson5;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -23,7 +23,7 @@ public class Task10 {
     @Before
     public void start() {
         // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
-        System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
+        // System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 2);
@@ -82,7 +82,17 @@ public class Task10 {
         colorSet = colorSet.substring(colorSet.indexOf(",")+2);
         String green = colorSet.substring(0, colorSet.indexOf(","));
         colorSet = colorSet.substring(colorSet.indexOf(",")+2);
-        String blue = colorSet.substring(0, colorSet.indexOf(","));
+
+        // Ветвление для firefox
+        Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+        String browserName = cap.getBrowserName().toLowerCase();
+        String blue;
+        if (browserName.equals("firefox")) {
+            blue = colorSet;
+        }
+        else {
+            blue = colorSet.substring(0, colorSet.indexOf(","));
+        }
         return ((green.equals("0"))&&(blue.equals("0")));
     }
 
@@ -92,7 +102,17 @@ public class Task10 {
         colorSet = colorSet.substring(colorSet.indexOf(",")+2);
         String green = colorSet.substring(0, colorSet.indexOf(","));
         colorSet = colorSet.substring(colorSet.indexOf(",")+2);
-        String blue = colorSet.substring(0, colorSet.indexOf(","));
+
+        // Ветвление для firefox
+        Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+        String browserName = cap.getBrowserName().toLowerCase();
+        String blue;
+        if (browserName.equals("firefox")) {
+            blue = colorSet;
+        }
+        else {
+            blue = colorSet.substring(0, colorSet.indexOf(","));
+        }
         return ((red.equals(green))&&(green.equals(blue)));
     }
 
