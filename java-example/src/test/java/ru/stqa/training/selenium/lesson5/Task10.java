@@ -31,7 +31,6 @@ public class Task10 {
         wait.until(titleIs("Online Store | My Store"));
     }
 
-    //Проверка пуша с ubuntu
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
