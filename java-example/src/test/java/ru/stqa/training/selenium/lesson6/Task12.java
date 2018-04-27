@@ -6,11 +6,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
@@ -22,8 +25,8 @@ public class Task12 {
 
     @Before
     public void start() {
-        // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
-        System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
+        System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
+        // System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 2);
@@ -40,23 +43,59 @@ public class Task12 {
     }
 
     @Test
-    public void addNewGoodTest() {
-        // Переход на страницу регистрации
+    public void addNewProductTest() {
+        // Переход на страницу создания товара
         driver.findElement(By.cssSelector("a.button[href*=edit_product]")).click();
         wait.until(titleIs("Add New Product | My Store"));
 
-        // Заполнение закладки General
+        // Ввод данных на закладке General
+        driver.findElement(By.xpath("//*[contains(text(),' Enabled')]")).click();
+        String name = "OneMoreDuck" + new Random().nextInt();
+        driver.findElement(By.name("name[en]")).sendKeys(name);
+        driver.findElement(By.name("code")).sendKeys("Code" + new Random().nextInt());
+        driver.findElement(By.cssSelector("input[data-name='Rubber Ducks']")).click();
+        WebElement female = driver.findElement(By.xpath("//*[contains(text(),'Female')]/parent::tr"));
+        female.findElement(By.cssSelector("input")).click();
+        driver.findElement(By.cssSelector("input[name='quantity']")).clear();
+        driver.findElement(By.cssSelector("input[name='quantity']")).sendKeys("5");
+        driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("/home/serene/Downloads/one-more-duck.jpg");
+        driver.findElement(By.cssSelector("input[name='date_valid_from']")).sendKeys("04/27/2018");
+        driver.findElement(By.cssSelector("input[name='date_valid_to']")).sendKeys("04/27/2019");
 
         // Переход на закладку Information
         driver.findElement(By.cssSelector("ul.index a[href='#tab-information']")).click();
+        wait.until(ExpectedConditions.attributeContains(By.xpath("//a[@href='#tab-information']/parent::li"),
+                "class", "active"));
+        // Ввод данных на закладке Information
+        Select manufacturer = new Select(driver.findElement(By.cssSelector("select[name=manufacturer_id]")));
+        manufacturer.selectByIndex(1);
+        driver.findElement(By.cssSelector("input[name='keywords']")).sendKeys("OneMoreDuck");
+        driver.findElement(By.cssSelector("input[name='short_description[en]']")).sendKeys("Short description");
+        driver.findElement(By.cssSelector("div.trumbowyg-editor")).sendKeys("Full description");
+        driver.findElement(By.cssSelector("input[name='head_title[en]']")).sendKeys("Head title");
+        driver.findElement(By.cssSelector("input[name='meta_description[en]']")).sendKeys("Meta description");
 
         // Переход на закладку Prices
-        driver.findElement(By.cssSelector("ul.index a[href='#tab-зrices']")).click();
+        driver.findElement(By.cssSelector("ul.index a[href='#tab-prices']")).click();
+        wait.until(ExpectedConditions.attributeContains(By.xpath("//a[@href='#tab-prices']/parent::li"),
+                "class", "active"));
+        // Ввод данных на закладке Prices
+        driver.findElement(By.cssSelector("input[name='purchase_price'")).clear();
+        driver.findElement(By.cssSelector("input[name='purchase_price'")).sendKeys("2");
+        Select currency = new Select(driver.findElement(By.cssSelector("select[name=purchase_price_currency_code]")));
+        currency.selectByVisibleText("Euros");
+        driver.findElement(By.cssSelector("input[name='gross_prices[USD]'")).clear();
+        driver.findElement(By.cssSelector("input[name='gross_prices[USD]'")).sendKeys("5");
+        driver.findElement(By.cssSelector("input[name='gross_prices[EUR]'")).clear();
+        driver.findElement(By.cssSelector("input[name='gross_prices[EUR]'")).sendKeys("4");
 
         // Сохранение товара
         driver.findElement(By.cssSelector("button[name=save]")).click();
 
         // Проверка в каталоге товаров
+        driver.get("http://localhost/litecart/admin/?app=catalog&doc=catalog");
+        wait.until(titleIs("Catalog | My Store"));
+        wait.until(presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
     }
 
     @After
