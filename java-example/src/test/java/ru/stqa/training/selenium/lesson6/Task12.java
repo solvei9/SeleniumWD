@@ -25,7 +25,7 @@ public class Task12 {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
+        // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
         // System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -58,7 +58,8 @@ public class Task12 {
         female.findElement(By.cssSelector("input")).click();
         driver.findElement(By.cssSelector("input[name='quantity']")).clear();
         driver.findElement(By.cssSelector("input[name='quantity']")).sendKeys("5");
-        driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("/home/serene/Downloads/one-more-duck.jpg");
+        // driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("/home/serene/Downloads/one-more-duck.jpg");
+        driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("D:/Tmp/one-more-duck.jpg");
         driver.findElement(By.cssSelector("input[name='date_valid_from']")).sendKeys("04/27/2018");
         driver.findElement(By.cssSelector("input[name='date_valid_to']")).sendKeys("04/27/2019");
 
