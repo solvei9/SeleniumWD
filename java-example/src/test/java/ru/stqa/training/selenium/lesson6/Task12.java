@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -58,8 +56,13 @@ public class Task12 {
         female.findElement(By.cssSelector("input")).click();
         driver.findElement(By.cssSelector("input[name='quantity']")).clear();
         driver.findElement(By.cssSelector("input[name='quantity']")).sendKeys("5");
-        // driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("/home/serene/Downloads/one-more-duck.jpg");
-        driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys("D:/Tmp/one-more-duck.jpg");
+        try {
+            String imageFile = getClass().getClassLoader().getResource("one-more-duck.jpg").getFile();
+            driver.findElement(By.cssSelector("input[name='new_images[]']")).sendKeys(imageFile);
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
         driver.findElement(By.cssSelector("input[name='date_valid_from']")).sendKeys("04/27/2018");
         driver.findElement(By.cssSelector("input[name='date_valid_to']")).sendKeys("04/27/2019");
 
