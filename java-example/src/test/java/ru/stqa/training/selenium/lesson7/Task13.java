@@ -23,10 +23,9 @@ public class Task13 {
 
     @Before
     public void start() {
-        System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
+        // System.setProperty("webdriver.chrome.driver", "/home/serene/Downloads/chromedriver"); // Ubuntu
         // System.setProperty("webdriver.chrome.driver", "C:/Tools/chromedriver.exe"); // Windows
         driver = new ChromeDriver();
-        //driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, 5);
     }
 
@@ -34,7 +33,7 @@ public class Task13 {
     public void cartTest() {
         // Добавление товара в корзину
         for (int i = 1; i < 4; i++) {
-            addToCart(""+i);
+            addProductToCart(""+i);
         }
 
         // Переход в корзину
@@ -50,7 +49,7 @@ public class Task13 {
         }
     }
 
-    private void addToCart(String count) {
+    private void addProductToCart(String count) {
         driver.get("http://localhost/litecart");
         wait.until(titleIs("Online Store | My Store"));
         driver.findElement(By.cssSelector("li.product")).click();
