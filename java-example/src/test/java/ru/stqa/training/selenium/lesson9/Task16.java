@@ -13,9 +13,9 @@ import java.net.URL;
 
 public class Task16 {
     private WebDriver driver;
-    public static final String USERNAME = "catherine83";
-    public static final String AUTOMATE_KEY = "Pwis15yeoC1anQ6TTqxx";
-    public static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
+    private static final String USERNAME = "catherine83";
+    private static final String AUTOMATE_KEY = "Pwis15yeoC1anQ6TTqxx";
+    private static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
     @Before
     public void start() throws Exception {
@@ -29,7 +29,6 @@ public class Task16 {
     public void FirstSimpleTest() {
         // Открытие страницы
         driver.get("http://www.google.com/");
-        WebElement element = driver.findElement(By.name("q"));
     }
 
     @After
