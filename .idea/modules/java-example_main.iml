@@ -3,7 +3,10 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../java-example/out/production/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../java-example/src/main" />
+    <content url="file://$MODULE_DIR$/../../java-example/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../java-example/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../java-example/src/main/resources" type="java-resource" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: net.lightbody.bmp:browsermob-core:2.1.5" level="project" />
