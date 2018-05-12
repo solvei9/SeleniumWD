@@ -6,7 +6,7 @@ public class CartTests extends TestBase {
 
     @Test
     public void addAndRemoveProductsTest() {
-        app.addProductsToCart(3);
-        app.deleteProductsFromCart();
+        application.addProductsToCart(3);
+        application.deleteProductsFromCart();
     }
 }

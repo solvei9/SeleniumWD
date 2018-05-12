@@ -1,14 +1,14 @@
 package ru.stqa.training.selenium.lesson11.tests;
 
 import org.junit.After;
-import ru.stqa.training.selenium.lesson11.app.Application;
+import ru.stqa.training.selenium.lesson11.application.Application;
 
 public class TestBase {
-    public Application app = new Application();
+    public Application application = new Application();
 
     @After
     public void tearDown() {
-        app.quit();
-        app = null;
+        application.quit();
+        application = null;
     }
 }

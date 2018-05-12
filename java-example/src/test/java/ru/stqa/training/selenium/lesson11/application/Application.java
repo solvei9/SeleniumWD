@@ -1,4 +1,4 @@
-package ru.stqa.training.selenium.lesson11.app;
+package ru.stqa.training.selenium.lesson11.application;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
